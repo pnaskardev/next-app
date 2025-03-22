@@ -3,16 +3,26 @@
 
 import axios from "axios";
 import { ChangeEventHandler, useState } from "react";
-
+import { useRouter } from "next/navigation";
 export function Signup() {
+  const router = useRouter();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  function signUp() {
-    axios.post("http:localhost/3000/api/user", {
-      username,
-      password,
-    });
+  async function signUp() {
+    try {
+      const result = await axios.post("http://localhost:3000/api/user", {
+        username,
+        password,
+      });
+
+      if (result.data.success) {
+        router.push("/user");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
